@@ -1,6 +1,4 @@
 import requests
-import random
-
 from models import db, User
 
 
@@ -22,10 +20,12 @@ class UserService:
                 first_name=user_data["name"]["first"],
                 last_name=user_data["name"]["last"],
                 phone=user_data["phone"],
+                cell=user_data.get("cell", ""),  # Added cell
                 email=user_data["email"],
                 street=f"{user_data['location']['street']['number']} {user_data['location']['street']['name']}",
                 city=user_data["location"]["city"],
                 state=user_data["location"]["state"],
+                country=user_data["location"]["country"],  # Added country
                 postcode=str(user_data["location"]["postcode"]),
                 picture_thumbnail=user_data["picture"]["thumbnail"],
                 picture_large=user_data["picture"]["large"],
@@ -38,16 +38,12 @@ class UserService:
 
     @classmethod
     def get_random_user(cls):
-        count = cls.get_user_count()
-        if count == 0:
-            return None
-        offset = random.randint(0, count - 1)
-        return User.query.offset(offset).first()
-
-    @classmethod
-    def get_user_count(cls):
-        return db.session.query(User).count()
+        return User.query.order_by(db.func.random()).first()
 
     @classmethod
     def get_users_paginated(cls, page=1, per_page=20):
         return User.query.paginate(page=page, per_page=per_page, error_out=False)
+
+    @classmethod
+    def get_user_count(cls):
+        return db.session.query(User).count()
