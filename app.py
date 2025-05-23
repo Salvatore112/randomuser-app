@@ -43,5 +43,25 @@ def random_user():
     return render_template("user.html", user=user)
 
 
+@app.cli.command("init-db")
+def init_db():
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        users_data = UserService.fetch_users(1000)
+        UserService.save_users(users_data)
+    print("Database initialized")
+
+
+@app.cli.command("init-db")
+def init_db():
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        users_data = UserService.fetch_users(1000)
+        UserService.save_users(users_data)
+    print("Database initialized")
+
+
 if __name__ == "__main__":
     app.run(debug=True)
