@@ -1,102 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>User Details - {{ user.first_name }} {{ user.last_name }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.title }} {{ user.first_name }} {{ user.last_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .user-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .user-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .user-photo {
-            margin-right: 20px;
-        }
-
-        .user-photo img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid #007bff;
-        }
-
-        .user-info {
-            flex: 1;
-        }
-
-        .user-info h1 {
-            margin: 0 0 10px 0;
-            color: #333;
-        }
-
-        .user-details {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
         .detail-row {
-            display: flex;
-            margin-bottom: 10px;
+            margin-bottom: 1rem;
         }
 
         .detail-label {
-            font-weight: bold;
-            width: 120px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 8px 15px;
-            background-color: #6c757d;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-
-        .back-link:hover {
-            background-color: #5a6268;
+            font-weight: 500;
+            color: #495057;
         }
     </style>
 </head>
 
-<body>
-    <div class="user-container">
-        <div class="user-header">
-            <div class="user-photo">
-                <img src="{{ user.picture_large }}" alt="{{ user.first_name }} {{ user.last_name }}">
-            </div>
-            <div class="user-info">
-                <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-                <p>{{ user.gender|capitalize }} • ID: {{ user.id }}</p>
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-4">
+                    <img src="{{ user.picture_large }}" alt="{{ user.first_name }} {{ user.last_name }}"
+                        class="rounded-circle me-4" width="150" height="150">
+                    <div>
+                        <h1 class="mb-1">{{ user.title }} {{ user.first_name }} {{ user.last_name }}</h1>
+                        <p class="text-muted mb-1">{{ user.gender|capitalize }}</p>
+                        <p class="text-muted">User ID: {{ user.id }}</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="h4 border-bottom pb-2 mb-3">Contact Information</h2>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">Email:</div>
+                        <div class="col-md-10">{{ user.email }}</div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">Phone:</div>
+                        <div class="col-md-10">{{ user.phone }}</div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">Cell:</div>
+                        <div class="col-md-10">{{ user.cell }}</div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="h4 border-bottom pb-2 mb-3">Location</h2>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">Street:</div>
+                        <div class="col-md-10">{{ user.street_number }} {{ user.street_name }}</div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">City:</div>
+                        <div class="col-md-10">{{ user.city }}</div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">State:</div>
+                        <div class="col-md-10">{{ user.state }}</div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">Country:</div>
+                        <div class="col-md-10">{{ user.country }}</div>
+                    </div>
+                    <div class="row detail-row">
+                        <div class="col-md-2 detail-label">Postcode:</div>
+                        <div class="col-md-10">{{ user.postcode }}</div>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to User List</a>
             </div>
         </div>
-
-        <div class="user-details">
-            <div class="detail-row">
-                <div class="detail-label">Email:</div>
-                <div>{{ user.email }}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Phone:</div>
-                <div>{{ user.phone }}</div>
-            </div>
-            <div class="detail-row">
-                <div class="detail-label">Address:</div>
-                <div>{{ user.location }}</div>
-            </div>
-        </div>
-
-        <a href="{{ url_for('index') }}" class="back-link">Back to User List</a>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
