@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_DEBUG=1
+    command: flask run --host=0.0.0.0
+
+  test:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=testing
+    command: >
+      sh -c "flask init-db && pytest -v"
