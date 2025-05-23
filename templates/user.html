@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ user.title }} {{ user.first_name }} {{ user.last_name }}</title>
+    <title>{{ user.first_name }} {{ user.last_name }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .detail-row {
             margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
         }
 
         .detail-label {
@@ -26,7 +28,7 @@
                     <img src="{{ user.picture_large }}" alt="{{ user.first_name }} {{ user.last_name }}"
                         class="rounded-circle me-4" width="150" height="150">
                     <div>
-                        <h1 class="mb-1">{{ user.title }} {{ user.first_name }} {{ user.last_name }}</h1>
+                        <h1 class="mb-1">{{ user.first_name }} {{ user.last_name }}</h1>
                         <p class="text-muted mb-1">{{ user.gender|capitalize }}</p>
                         <p class="text-muted">User ID: {{ user.id }}</p>
                     </div>
@@ -42,17 +44,19 @@
                         <div class="col-md-2 detail-label">Phone:</div>
                         <div class="col-md-10">{{ user.phone }}</div>
                     </div>
+                    {% if user.cell %}
                     <div class="row detail-row">
                         <div class="col-md-2 detail-label">Cell:</div>
                         <div class="col-md-10">{{ user.cell }}</div>
                     </div>
+                    {% endif %}
                 </div>
 
                 <div class="mb-4">
                     <h2 class="h4 border-bottom pb-2 mb-3">Location</h2>
                     <div class="row detail-row">
                         <div class="col-md-2 detail-label">Street:</div>
-                        <div class="col-md-10">{{ user.street_number }} {{ user.street_name }}</div>
+                        <div class="col-md-10">{{ user.street }}</div>
                     </div>
                     <div class="row detail-row">
                         <div class="col-md-2 detail-label">City:</div>

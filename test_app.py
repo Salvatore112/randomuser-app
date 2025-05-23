@@ -1,5 +1,4 @@
 import pytest
-
 from app import app as flask_app
 from app import db
 from models import User
@@ -11,7 +10,6 @@ def app():
     flask_app.config["TESTING"] = True
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
     flask_app.config["WTF_CSRF_ENABLED"] = False
-
     with flask_app.app_context():
         db.create_all()
         yield flask_app
@@ -31,11 +29,13 @@ def init_database(app):
                 "gender": "male",
                 "name": {"first": "John", "last": "Doe"},
                 "phone": "123-456-7890",
+                "cell": "987-654-3210",
                 "email": "john@example.com",
                 "location": {
                     "street": {"number": 123, "name": "Main St"},
                     "city": "Anytown",
                     "state": "CA",
+                    "country": "USA",
                     "postcode": "12345",
                 },
                 "picture": {
@@ -69,11 +69,13 @@ def test_pagination(client, init_database):
             "gender": "female",
             "name": {"first": f"Jane{i}", "last": "Smith"},
             "phone": f"555-555-{i:04d}",
+            "cell": f"666-666-{i:04d}",
             "email": f"jane{i}@example.com",
             "location": {
                 "street": {"number": i, "name": "Oak St"},
                 "city": "Othertown",
                 "state": "NY",
+                "country": "USA",
                 "postcode": f"5432{i}",
             },
             "picture": {
@@ -83,14 +85,11 @@ def test_pagination(client, init_database):
         }
         for i in range(1, 25)
     ]
-
     with flask_app.app_context():
         UserService.save_users(test_users)
-
     response = client.get("/")
     assert response.status_code == 200
     assert b"Jane1" in response.data
-
     response = client.get("/?page=2")
     assert response.status_code == 200
     assert b"Jane20" in response.data
@@ -101,11 +100,13 @@ def test_user_service_save_users(app):
         "gender": "female",
         "name": {"first": "Alice", "last": "Wonderland"},
         "phone": "987-654-3210",
+        "cell": "123-456-7890",
         "email": "alice@example.com",
         "location": {
             "street": {"number": 456, "name": "Elm St"},
             "city": "Wonderland",
             "state": "WL",
+            "country": "WL",
             "postcode": "98765",
         },
         "picture": {
@@ -113,13 +114,11 @@ def test_user_service_save_users(app):
             "large": "http://example.com/alice_large.jpg",
         },
     }
-
     with app.app_context():
-        count_before = UserService.get_user_count()
+        count_before = User.query.count()
         UserService.save_users([test_user])
-        count_after = UserService.get_user_count()
+        count_after = User.query.count()
         assert count_after == count_before + 1
-
         user = User.query.filter_by(first_name="Alice").first()
         assert user is not None
         assert user.last_name == "Wonderland"
@@ -133,4 +132,4 @@ def test_user_model_to_dict(app, init_database):
         assert "first_name" in user_dict
         assert "last_name" in user_dict
         assert "email" in user_dict
-        assert "location" in user_dict
+        assert "country" in user_dict
