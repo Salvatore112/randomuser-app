@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Random Users</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        img.thumbnail {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .pagination a,
+        .pagination strong {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .pagination a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .pagination strong {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .load-form {
+            margin: 20px 0;
+        }
+
+        .load-form input {
+            padding: 5px;
+        }
+
+        .load-form button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Random Users</h1>
+
+    <form class="load-form" method="POST">
+        <label for="count">Number of users to load:</label>
+        <input type="number" id="count" name="count" min="1" max="5000" value="20">
+        <button type="submit">Load Users</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Location</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in pagination.items %}
+            <tr>
+                <td><img class="thumbnail" src="{{ user.picture_thumbnail }}" alt="{{ user.first_name }}"></td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.gender }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.location }}</td>
+                <td><a href="{{ url_for('user_detail', user_id=user.id) }}">View Details</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if pagination.has_prev %}
+        <a href="{{ url_for('index', page=pagination.prev_num) }}">&laquo; Previous</a>
+        {% endif %}
+
+        {% for page_num in pagination.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+        {% if page_num %}
+        {% if page_num == pagination.page %}
+        <strong>{{ page_num }}</strong>
+        {% else %}
+        <a href="{{ url_for('index', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+        {% else %}
+        <span>...</span>
+        {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+        <a href="{{ url_for('index', page=pagination.next_num) }}">Next &raquo;</a>
+        {% endif %}
+    </div>
+</body>
+
+</html>

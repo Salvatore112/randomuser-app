@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Details - {{ user.first_name }} {{ user.last_name }}</title>
+    <style>
+        .user-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-photo {
+            margin-right: 20px;
+        }
+
+        .user-photo img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-info h1 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .user-details {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            width: 120px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 15px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-link:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="user-container">
+        <div class="user-header">
+            <div class="user-photo">
+                <img src="{{ user.picture_large }}" alt="{{ user.first_name }} {{ user.last_name }}">
+            </div>
+            <div class="user-info">
+                <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+                <p>{{ user.gender|capitalize }} • ID: {{ user.id }}</p>
+            </div>
+        </div>
+
+        <div class="user-details">
+            <div class="detail-row">
+                <div class="detail-label">Email:</div>
+                <div>{{ user.email }}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Phone:</div>
+                <div>{{ user.phone }}</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Address:</div>
+                <div>{{ user.location }}</div>
+            </div>
+        </div>
+
+        <a href="{{ url_for('index') }}" class="back-link">Back to User List</a>
+    </div>
+</body>
+
+</html>
